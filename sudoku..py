@@ -21,11 +21,24 @@ def generate_sudoku():
 
     return board
 
+def generate_sudoku_with_difficulty(level='medium'):
+    difficulty = {'easy': 1, 'medium': 0.75, 'hard': 0.5}
+    if level not in difficulty:
+        raise ValueError("Invalid difficulty level. Choose from 'easy', 'medium', 'hard'.")
+
+    board = generate_sudoku()
+    squares = 81
+    empties = int(squares * (1 - difficulty[level]))
+    for p in random.sample(range(squares), empties):
+        board[p // 9][p % 9] = 0
+
+    return board
+
 def print_sudoku(board):
     for row in board:
         print(" ".join(str(num) if num != 0 else '.' for num in row))
 
 if __name__ == "__main__":
-    sudoku_board = generate_sudoku()
+    level = input("Choose difficulty level (easy, medium, hard): ").strip().lower()
+    sudoku_board = generate_sudoku_with_difficulty(level)
     print_sudoku(sudoku_board)
-
